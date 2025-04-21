@@ -205,7 +205,7 @@
 
             const profit = (initial * percent / 100);
             const final = initial + profit;
-            resultDiv.innerHTML = `Final Amount after ${percent}% Gain: ₹${formatIndianNumber(final.toFixed(2))}<br>Profit: ₹${ (profit.toFixed(2))}`;
+            resultDiv.innerHTML = `Final Amount after ${percent}% Gain: ₹${formatIndianNumber(final.toFixed(2))}<br>Profit: ₹${profit.toFixed(2)}`;
         }
 
         ['initialValue1', 'profitValue', 'initialValue2'].forEach(id => {
