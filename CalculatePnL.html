@@ -1,0 +1,107 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Devyani's Percentage Gain Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    input[readonly] {
+      background-color: #eee;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <h1>Devynai's Percentage Gain Calculator</h1>
+  <div class="container">
+    <label>Initial Value:</label>
+    <input type="number" id="initialValue" placeholder="Enter initial value" oninput="updateFinalValue()" />
+
+    <label>Profit/Loss Value:</label>
+    <input type="number" id="profitValue" placeholder="Enter profit/loss value" oninput="updateFinalValue()" />
+
+    <label>Final Value (Initial + Profit/Loss):</label>
+    <input type="number" id="finalValue" readonly />
+
+    <button onclick="calculateGain()">Calculate % Gain</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function updateFinalValue() {
+      const initial = parseFloat(document.getElementById("initialValue").value) || 0;
+      const profit = parseFloat(document.getElementById("profitValue").value) || 0;
+      const final = initial + profit;
+      document.getElementById("finalValue").value = final.toFixed(2);
+    }
+
+    function calculateGain() {
+      const initial = parseFloat(document.getElementById("initialValue").value);
+      const final = parseFloat(document.getElementById("finalValue").value);
+      const resultDiv = document.getElementById("result");
+
+      if (isNaN(initial) || isNaN(final) || initial === 0) {
+        resultDiv.innerHTML = "Please enter valid numbers (Initial ≠ 0)";
+        return;
+      }
+
+      const percentGain = ((final - initial) / initial) * 100;
+      const gainOrLoss = percentGain >= 0 ? "Gain" : "Loss";
+
+      resultDiv.innerHTML = `${gainOrLoss}: ${percentGain.toFixed(2)}%`;
+    }
+  </script>
+</body>
+</html>
