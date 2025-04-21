@@ -1,107 +1,208 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Devyani's Percentage Gain Calculator</title>
-  <style>
-    
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f7fa;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 50px;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Devyani's Gain Calculators</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            padding: 30px;
+            margin: 0;
+        }
 
-    h1 {
-      color: #333;
-    }
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 100%;
-    }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
+        .panel-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
 
-    input[readonly] {
-      background-color: #eee;
-    }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            flex: 1;
+            box-sizing: border-box;
+        }
 
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-    }
+        h2 {
+            margin-top: 0;
+            color: #007bff;
+            text-align: center;
+        }
 
-    button:hover {
-      background-color: #0056b3;
-    }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
 
-    .result {
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: bold;
-      color: #2c3e50;
-    }
-  </style>
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+            input[readonly] {
+                background-color: #eee;
+            }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
+        .result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .panel-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Devynai's Percentage Gain Calculator</h1>
-  <div class="container">
-    <label>Initial Value:</label>
-    <input type="number" id="initialValue" placeholder="Enter initial value" oninput="updateFinalValue()" />
 
-    <label>Profit/Loss Value:</label>
-    <input type="number" id="profitValue" placeholder="Enter profit/loss value" oninput="updateFinalValue()" />
+    <h1>Devyani's Gain Calculators</h1>
+    <div class="panel-container">
 
-    <label>Final Value (Initial + Profit/Loss):</label>
-    <input type="number" id="finalValue" readonly />
+        <!-- Panel 1 -->
+        <div class="container">
+            <h2>Percentage Gain from Profit</h2>
+            <label>Initial Value:</label>
+            <input type="text" id="initialValue1" placeholder="Enter initial value" oninput="updateFinalValue()" />
 
-    <button onclick="calculateGain()">Calculate % Gain</button>
+            <label>Profit/Loss Value:</label>
+            <input type="text" id="profitValue" placeholder="Enter profit/loss value" oninput="updateFinalValue()" />
 
-    <div class="result" id="result"></div>
-  </div>
+            <label>Final Value (Initial + Profit/Loss):</label>
+            <input type="text" id="finalValue1" readonly />
 
-  <script>
-    function updateFinalValue() {
-      const initial = parseFloat(document.getElementById("initialValue").value) || 0;
-      const profit = parseFloat(document.getElementById("profitValue").value) || 0;
-      const final = initial + profit;
-      document.getElementById("finalValue").value = final.toFixed(2);
-    }
+            <button onclick="calculateGain()">Calculate % Gain</button>
+            <div class="result" id="result1"></div>
+        </div>
 
-    function calculateGain() {
-      const initial = parseFloat(document.getElementById("initialValue").value);
-      const final = parseFloat(document.getElementById("finalValue").value);
-      const resultDiv = document.getElementById("result");
+        <!-- Panel 2 -->
+        <div class="container">
+            <h2>Final Amount from % Gain</h2>
+            <label>Initial Value:</label>
+            <input type="text" id="initialValue2" placeholder="Enter initial value" />
 
-      if (isNaN(initial) || isNaN(final) || initial === 0) {
-        resultDiv.innerHTML = "Please enter valid numbers (Initial ≠ 0)";
-        return;
-      }
+            <label>Additional Gain %:</label>
+            <input type="number" id="percentValue" placeholder="Enter % gain (e.g. 10 for 10%)" />
 
-      const percentGain = ((final - initial) / initial) * 100;
-      const gainOrLoss = percentGain >= 0 ? "Gain" : "Loss";
+            <button onclick="calculateFinalAmount()">Calculate Final Amount</button>
+            <div class="result" id="result2"></div>
+        </div>
 
-      resultDiv.innerHTML = `${gainOrLoss}: ${percentGain.toFixed(2)}%`;
-    }
-  </script>
+    </div>
+
+    <script>
+        function parseIndianNumber(value) {
+            return parseFloat(value.replace(/,/g, '')) || 0;
+        }
+
+        function formatIndianNumber(value) {
+            let x = value.toString().split('.');
+            let intPart = x[0];
+            let decimalPart = x.length > 1 ? '.' + x[1] : '';
+            let lastThree = intPart.slice(-3);
+            let otherNumbers = intPart.slice(0, -3);
+            if (otherNumbers !== '')
+                lastThree = ',' + lastThree;
+            let formatted = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + decimalPart;
+            return formatted;
+        }
+
+        function updateFinalValue() {
+            const initial = parseIndianNumber(document.getElementById("initialValue1").value);
+            const profit = parseIndianNumber(document.getElementById("profitValue").value);
+            const final = initial + profit;
+            document.getElementById("finalValue1").value = formatIndianNumber(final.toFixed(2));
+        }
+
+        function calculateGain() {
+            const initial = parseIndianNumber(document.getElementById("initialValue1").value);
+            const final = parseIndianNumber(document.getElementById("finalValue1").value);
+            const resultDiv = document.getElementById("result1");
+
+            if (isNaN(initial) || isNaN(final) || initial === 0) {
+                resultDiv.innerHTML = "Please enter valid numbers (Initial ≠ 0)";
+                return;
+            }
+
+            const percentGain = ((final - initial) / initial) * 100;
+            const gainOrLoss = percentGain >= 0 ? "Gain" : "Loss";
+
+            resultDiv.innerHTML = `${gainOrLoss}: ${percentGain.toFixed(2)}%`;
+        }
+
+        function calculateFinalAmount() {
+            const initial = parseIndianNumber(document.getElementById("initialValue2").value);
+            const percent = parseFloat(document.getElementById("percentValue").value);
+            const resultDiv = document.getElementById("result2");
+
+            if (isNaN(initial) || isNaN(percent)) {
+                resultDiv.innerHTML = "Please enter valid numbers";
+                return;
+            }
+            const PercentageValue = (initial * percent / 100)
+            const final = initial + (initial * percent / 100);
+            resultDiv.innerHTML = `Final Amount after ${percent}% Gain: ₹${formatIndianNumber(final.toFixed(2))}.<BR>Exact Additional profit is ₹${PercentageValue.toFixed(2)}`;
+        }
+
+        // Auto format inputs
+        ['initialValue1', 'profitValue', 'initialValue2'].forEach(id => {
+            document.getElementById(id).addEventListener('input', function (e) {
+                let value = e.target.value.replace(/,/g, '').replace(/[^\d.]/g, '');
+                if (value === '') {
+                    e.target.value = '';
+                    return;
+                }
+                let num = parseFloat(value);
+                if (!isNaN(num)) {
+                    e.target.value = formatIndianNumber(num.toString());
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
