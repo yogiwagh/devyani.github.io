@@ -187,10 +187,32 @@
                 return;
             }
 
-            const percentGain = ((final - initial) / initial) * 100;
-            const gainOrLoss = percentGain >= 0 ? "Gain" : "Loss";
+         const percentGain = ((final - initial) / initial) * 100;
+    const gainOrLoss = percentGain >= 0 ? "Gain" : "Loss";
+    const profit = final - initial;
 
-            resultDiv.innerHTML = `${gainOrLoss}: ${percentGain.toFixed(2)}%`;
+    let message = "";
+
+    if (percentGain > 0 && percentGain <= 4) {
+        message = `Devyani , Every bit counts! Save the Capital Calculate for the 1 Lac Rupees`;
+    } else if (percentGain >= 5 && percentGain <= 10) {
+        message = `Devyani ,This is good! You know ₹${formatIndianNumber(initial.toFixed(2))} with a ${percentGain.toFixed(2)}% return gives you ₹${formatIndianNumber(profit.toFixed(2))}. A great start!`;
+    } else if (percentGain >= 11 && percentGain <= 20) {
+        message = `Amazing Devyani ,!  Imagine making this in 20 days of trading! Calculate for 1 Lac rupees`;
+    } else if (percentGain > 20 && percentGain <= 50) {
+        message = `Wow yaar! You're doing great 🔥. Bulls are smiling!! Calculate for 1 Lac rupees`;
+    } else if (percentGain > 50) {
+        message = `Really Devyani , Insane returns! 🚀  Sky is the limit!! Calculate for 1 Lac rupees`;
+    } else if (percentGain < 0) {
+        message = `Oops! Please Save the capital Better luck next trade!`;
+    }
+     /*Net ${gainOrLoss === "Gain" ? "Profit" : "Loss"}: ₹${formatIndianNumber(Math.abs(profit).toFixed(2))}<br>
+    */
+    resultDiv.innerHTML = `
+        ${gainOrLoss}: ${percentGain.toFixed(2)}%<br>
+       <br>
+        <em>${message}</em>
+    `;
         }
 
         function calculateFinalAmount() {
