@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stock Profit Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .calculator {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+    .calculator h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f0f8ff;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .highlight {
+      margin-top: 15px;
+      background-color: #fff7e6;
+      padding: 10px;
+      border-left: 4px solid #f39c12;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .highlight span {
+      display: block;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="calculator">
+    <!-- Add the back button here -->
+  <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; font-size: 14px; background-color: #ddd; border: none; border-radius: 6px; cursor: pointer;">
+    ⬅️ Back to Home
+  </button>
+
+  <h2>Stock Profit Calculator</h2>
+
+  <label for="lots">Lot (No. of Lots)</label>
+  <input type="number" id="lots" placeholder="Enter number of lots" step="1" value="1">
+
+  <label for="qtyPerLot">Quantity per Lot</label>
+  <input type="number" id="qtyPerLot" placeholder="e.g., 75 per lot" step="1" value="75">
+
+  <label for="buyPrice">Buy Price (₹)</label>
+  <input type="number" id="buyPrice" placeholder="Enter buy price" step="0.01">
+
+  <label for="sellPrice">Sell Price (₹)</label>
+  <input type="number" id="sellPrice" placeholder="Enter sell price" step="0.01">
+
+  <div class="result" id="result"></div>
+  <div class="highlight" id="targetSellPrices"></div>
+</div>
+
+<script>
+  const lotsInput = document.getElementById('lots');
+  const qtyPerLotInput = document.getElementById('qtyPerLot');
+  const buyPriceInput = document.getElementById('buyPrice');
+  const sellPriceInput = document.getElementById('sellPrice');
+
+  const resultDiv = document.getElementById('result');
+  const targetDiv = document.getElementById('targetSellPrices');
+
+  function goBack() {
+    window.location.href = "index.html";
+  }
+  
+  function calculate() {
+    const lots = parseFloat(lotsInput.value);
+    const qtyPerLot = parseFloat(qtyPerLotInput.value);
+    const buy = parseFloat(buyPriceInput.value);
+    const sell = parseFloat(sellPriceInput.value);
+
+    if (isNaN(lots) || isNaN(qtyPerLot) || isNaN(buy) || isNaN(sell)) {
+      resultDiv.innerHTML = "<span style='color:red;'>Please fill in all fields correctly.</span>";
+      targetDiv.innerHTML = "";
+      return;
+    }
+
+    const totalQty = lots * qtyPerLot;
+    const profit = (sell - buy) * totalQty;
+    const percentage = ((sell - buy) / buy) * 100;
+    const invCost=totalQty *buy ;
+    resultDiv.innerHTML = `
+    
+      <strong>Total Investment:</strong> ₹${invCost} <br>
+      <strong>Total Quantity:</strong> ${totalQty} shares<br>
+      <strong>Profit/Loss:</strong> ₹${profit.toFixed(2)}<br>
+      <strong>Percentage:</strong> ${percentage.toFixed(2)}%
+    `;
+
+    let targets = `<strong>Target Sell Prices (Profit Levels):</strong><br>`;
+    for (let i = 10; i <= 30; i += 10) {
+      const targetSell = buy * (1 + i / 100);
+      const targetProfit = (targetSell - buy) * totalQty;
+      targets += `<span>At ${i}% gain → <strong>₹${targetSell.toFixed(2)}</strong> → Profit: ₹${targetProfit.toFixed(2)}</span>`;
+    }
+
+    targetDiv.innerHTML = targets;
+  }
+
+  [lotsInput, qtyPerLotInput, buyPriceInput, sellPriceInput].forEach(input => {
+    input.addEventListener('input', calculate);
+  });
+
+  calculate();
+</script>
+
+</body>
+</html>
