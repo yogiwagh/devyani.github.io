@@ -126,7 +126,10 @@
 </head>
 <body>
     <h1>🚀 Devyani's Gain Calculators</h1>
-    <div class="panel-container">
+       <!-- Add the back button here -->
+  <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; font-size: 14px; background-color: #ddd; border: none; border-radius: 6px; cursor: pointer;">
+    ⬅️ Back to Home
+  </button> <div class="panel-container">
         <div class="container">
             <h2>📈 % Gain from Profit</h2>
             <label>Initial Value:</label>
@@ -156,6 +159,9 @@
     </div>
 
     <script>
+ function goBack() {
+    window.location.href = "Stockcalculator.html";
+  }
         function parseIndianNumber(value) {
             return parseFloat(value.replace(/,/g, '')) || 0;
         }
