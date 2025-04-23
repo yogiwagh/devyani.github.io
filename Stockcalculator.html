@@ -1,147 +1,222 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Stock Profit Calculator</title>
   <style>
+    :root {
+      --bg-color: #121212;
+      --text-color: #eaeaea;
+      --card-bg: #1e1e1e;
+      --section-1: #2c2c2c;
+      --section-2: #262626;
+      --section-3: #333;
+      --accent-color: #4fc3f7;
+      --table-header: #444;
+    }
+
+    [data-theme="dark"] {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #eef2f3;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
       justify-content: center;
-      align-items: center;
       padding: 20px;
-      min-height: 100vh;
+      background-color: var(--bg-color);
+      color: var(--text-color);
     }
+
     .calculator {
-      background: #fff;
-      padding: 30px;
+      background-color: var(--card-bg);
+      padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-      width: 400px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
-    .calculator h2 {
+
+    h2 {
       text-align: center;
       margin-bottom: 20px;
+      color: var(--accent-color);
     }
+
+    .menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .menu a {
+      color: #90caf9;
+      text-decoration: none;
+      font-size: 14px;
+      background-color: #1a1a1a;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+
     label {
       display: block;
-      margin-top: 10px;
+      margin-top: 12px;
       font-weight: bold;
     }
+
     input {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
-      border: 1px solid #ccc;
       border-radius: 6px;
+      border: 1px solid #555;
+      background-color: #2a2a2a;
+      color: #fff;
       font-size: 14px;
     }
-    .result {
+
+    .section {
       margin-top: 20px;
       padding: 15px;
-      background-color: #f0f8ff;
       border-radius: 8px;
+    }
+
+    .result { background-color: var(--section-1); }
+    .targets { background-color: var(--section-2); }
+    .profits { background-color: var(--section-3); }
+
+    table {
+      width: 100%;
+      margin-top: 10px;
+      border-collapse: collapse;
       font-size: 14px;
     }
-    .highlight {
-      margin-top: 15px;
-      background-color: #fff7e6;
-      padding: 10px;
-      border-left: 4px solid #f39c12;
-      border-radius: 6px;
-      font-size: 14px;
+
+    th, td {
+      padding: 8px;
+      border: 1px solid #444;
+      text-align: left;
     }
-    .highlight span {
-      display: block;
-      margin-bottom: 5px;
+
+    th {
+      background-color: var(--table-header);
+      color: #fff;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 10px;
+      }
     }
   </style>
 </head>
-<body>
+<body data-theme="dark">
 
 <div class="calculator">
-    <!-- Add the back button here -->
-  <button onclick="goBack()" style="margin-top: 20px; padding: 10px 20px; font-size: 14px; background-color: #ddd; border: none; border-radius: 6px; cursor: pointer;">
-    ⬅️ Back to Home
-  </button>
+  <div class="menu">
+    <a href="index.html">⬅ Home</a>
+  </div>
 
   <h2>Stock Profit Calculator</h2>
 
-  <label for="lots">Lot (No. of Lots)</label>
-  <input type="number" id="lots" placeholder="Enter number of lots" step="1" value="1">
+  <label>Lots</label>
+  <input type="number" id="lots" value="1">
 
-  <label for="qtyPerLot">Quantity per Lot</label>
-  <input type="number" id="qtyPerLot" placeholder="e.g., 75 per lot" step="1" value="75">
+  <label>Qty per Lot</label>
+  <input type="number" id="qtyPerLot" value="75">
 
-  <label for="buyPrice">Buy Price (₹)</label>
-  <input type="number" id="buyPrice" placeholder="Enter buy price" step="0.01">
+  <label>Buy Price (₹)</label>
+  <input type="number" id="buyPrice">
 
-  <label for="sellPrice">Sell Price (₹)</label>
-  <input type="number" id="sellPrice" placeholder="Enter sell price" step="0.01">
+  <label>Sell Price (₹)</label>
+  <input type="number" id="sellPrice">
 
-  <div class="result" id="result"></div>
-  <div class="highlight" id="targetSellPrices"></div>
+  <div class="section result" id="result"></div>
+  <div class="section targets" id="targetSellPrices"></div>
+  <div class="section profits" id="higherProfitTable"></div>
 </div>
 
 <script>
   const lotsInput = document.getElementById('lots');
-  const qtyPerLotInput = document.getElementById('qtyPerLot');
-  const buyPriceInput = document.getElementById('buyPrice');
-  const sellPriceInput = document.getElementById('sellPrice');
-
+  const qtyInput = document.getElementById('qtyPerLot');
+  const buyInput = document.getElementById('buyPrice');
+  const sellInput = document.getElementById('sellPrice');
   const resultDiv = document.getElementById('result');
   const targetDiv = document.getElementById('targetSellPrices');
+  const higherTable = document.getElementById('higherProfitTable');
 
-  function goBack() {
-    window.location.href = "index.html";
+  function formatINR(value) {
+    const suffixes = [
+      { limit: 1e7, suffix: 'CR' },
+      { limit: 1e5, suffix: 'L' },
+      { limit: 1e3, suffix: 'K' }
+    ];
+    for (const s of suffixes) {
+      if (value >= s.limit) return `₹ ${ (value / s.limit).toFixed(2) } ${s.suffix}`;
+    }
+    return `₹ ${ value.toFixed(2) }`;
   }
-  
+
   function calculate() {
     const lots = parseFloat(lotsInput.value);
-    const qtyPerLot = parseFloat(qtyPerLotInput.value);
-    const buy = parseFloat(buyPriceInput.value);
-    const sell = parseFloat(sellPriceInput.value);
+    const qtyPerLot = parseFloat(qtyInput.value);
+    const buy = parseFloat(buyInput.value);
+    const sell = parseFloat(sellInput.value);
 
     if (isNaN(lots) || isNaN(qtyPerLot) || isNaN(buy) || isNaN(sell)) {
       resultDiv.innerHTML = "<span style='color:red;'>Please fill in all fields correctly.</span>";
-      targetDiv.innerHTML = "";
       return;
     }
 
     const totalQty = lots * qtyPerLot;
     const profit = (sell - buy) * totalQty;
-    const percentage = ((sell - buy) / buy) * 100;
-    const invCost=totalQty *buy ;
-    cost OneLacInr= 100000+100000*(percentage/100)
-    cost TwoLacInr= 200000+200000*(percentage/100)
-    cost CrInr= 10000000+10000000*(percentage/100)
-    
-    resultDiv.innerHTML = `
-    
-      <strong>Total Investment:</strong> ₹${invCost} <br>
-      <strong>Total Quantity:</strong> ${totalQty} shares<br>
-      <strong>Profit/Loss:</strong> ₹${profit.toFixed(2)}<br>
-      <strong>Percentage:</strong> ${percentage.toFixed(2)}%
+    const percent = ((sell - buy) / buy) * 100;
+    const invCost = buy * totalQty;
 
-      <strong>For INR 1,00,000 - Profit would be:</strong> ${OneLacInr.toFixed(2)}%
-      <strong>For INR 2,00,000 - Profit would be:</strong> ${TwoLacInr.toFixed(2)}%
-      <strong>For INR 1,00,00,000 - Profit would be:</strong> ${CrInr.toFixed(2)}%
-   
-      
+    resultDiv.innerHTML = `
+      <strong>Total Investment:</strong> ₹${invCost.toLocaleString()}<br>
+      <strong>Total Quantity:</strong> ${totalQty}<br>
+      <strong>Profit:</strong> ₹${profit.toFixed(2)}<br>
+      <strong>Percentage:</strong> ${percent.toFixed(2)}%
     `;
 
-    let targets = `<strong>Target Sell Prices (Profit Levels):</strong><br>`;
+    let targets = `<strong>Target Sell Prices:</strong><table><tr><th>Gain %</th><th>Sell Price</th><th>Profit</th></tr>`;
     for (let i = 10; i <= 30; i += 10) {
       const targetSell = buy * (1 + i / 100);
       const targetProfit = (targetSell - buy) * totalQty;
-      targets += `<span>At ${i}% gain → <strong>₹${targetSell.toFixed(2)}</strong> → Profit: ₹${targetProfit.toFixed(2)}</span>`;
+      targets += `<tr><td>${i}%</td><td>₹${targetSell.toFixed(2)}</td><td>₹${targetProfit.toFixed(2)}</td></tr>`;
     }
-
+    targets += `</table>`;
     targetDiv.innerHTML = targets;
+
+    const returns = [
+      { capital: 100000, label: "₹1 Lac" },
+      { capital: 200000, label: "₹2 Lac" },
+      { capital: 10000000, label: "₹1 Crore" }
+    ];
+
+    let table = `<strong>Higher (Profit Levels):</strong><table>
+      <tr><th>Capital</th><th>Daily</th><th>20 Days</th><th>Yearly</th></tr>`;
+    for (const { capital, label } of returns) {
+      const gain = capital * (percent / 100);
+      table += `
+        <tr>
+          <td>${label}</td>
+          <td>${formatINR(capital + gain)}</td>
+          <td>${formatINR(gain * 20)}</td>
+          <td>${formatINR(gain * 240)}</td>
+        </tr>
+      `;
+    }
+    table += `</table>`;
+    higherTable.innerHTML = table;
   }
 
-  [lotsInput, qtyPerLotInput, buyPriceInput, sellPriceInput].forEach(input => {
+  [lotsInput, qtyInput, buyInput, sellInput].forEach(input => {
     input.addEventListener('input', calculate);
   });
 
