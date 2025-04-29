@@ -1,0 +1,1 @@
+type,entry,exit,symbol,entryPrice,exitPrice,qty,discovery,entryReason,exitReason,lesson,pnl,date
