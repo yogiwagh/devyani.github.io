@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Risk Reward Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #0f2027;
+      color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+     .menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .menu a {
+      color: #90caf9;
+      text-decoration: none;
+      font-size: 14px;
+      background-color: #1a1a1a;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #1f2d3d;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 8px;
+      background-color: #33475b;
+      color: white;
+      font-size: 16px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    .preset-btn {
+      flex: 1;
+      padding: 10px;
+      background: linear-gradient(to right, #ff416c, #ff4b2b);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform 0.2s;
+    }
+
+    .preset-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .loss {
+      color: #ff4b2b;
+    }
+
+    .profit {
+      color: #00ff9c;
+    }
+  </style>
+ <script src="script.js"></script></head>
+<body>
+  
+
+  <h1>📈 Risk-Reward Calculator</h1>
+    
+  <div class="container">
+<div class="menu">
+    <a href="index.html">⬅ Home</a>
+      
+     <a href="Login.html" onclick="logout()">Logout [->  </a>
+  </div>
+
+
+    <label for="lots">Lots:</label>
+    <input type="number" id="lots" placeholder="Enter number of lots">
+
+    <label for="Quantity Per Lot">Qty per Lot:</label>
+    <input type="number" id="qtyPerLot" placeholder="Enter quantity per lot">
+    
+    <label for="buyPrice">Buy Price:</label>
+    <input type="number" id="buyPrice" placeholder="Enter buy price (e.g., 100)">
+
+    <div class="btn-group">
+      <button class="preset-btn" onclick="calculate(10,30)">SL1/TG1 (10:30)</button>
+      <button class="preset-btn" onclick="calculate(1,10)">SL2/TG2 (1:10)</button>
+      <button class="preset-btn" onclick="calculate(4,8)">SL3/TG3 (4:8)</button>
+      <button class="preset-btn" onclick="calculate(10,12)">SL3/TG3 (10:12)</button>
+    </div>
+
+    <label>Or Enter Custom Risk:Reward</label>
+    <div class="btn-group">
+      <input type="number" id="customRisk" placeholder="Risk (e.g. 1)">
+      <input type="number" id="customReward" placeholder="Reward (e.g. 5)">
+      <button class="preset-btn" onclick="customCalculate()">Custom</button>
+    </div>
+
+    <div class="result" id="output"></div>
+  </div>
+
+  <script>
+    function calculate(risk, reward) {
+      const buyPrice = parseFloat(document.getElementById('buyPrice').value);
+      const lots = parseFloat(document.getElementById('lots').value);
+      const qtyPerLot = parseFloat(document.getElementById('qtyPerLot').value);
+      const totalQty = lots * qtyPerLot;
+       if (!buyPrice || !totalQty) {
+        document.getElementById('output').innerHTML = "<span class='loss'>Please enter all fields correctly.</span>";
+        return;
+      }
+      
+      const invValue =totalQty*buyPrice;
+       
+      const slPrice = buyPrice - (buyPrice * (risk / 100));
+      const tgPrice = buyPrice + (buyPrice * (reward / 100));
+
+      const totalLoss = ((buyPrice - slPrice) * totalQty).toFixed(2);
+      const totalProfit = ((tgPrice - buyPrice) * totalQty).toFixed(2);
+
+      document.getElementById('output').innerHTML = `
+        Investment Value : ₹${invValue.toFixed(2)}<br>
+        SL${risk}/TG${reward} → ${buyPrice}-${(buyPrice - buyPrice * (risk / 100)).toFixed(2)} / ${buyPrice}+${(buyPrice * (reward / 100)).toFixed(2)}<br>
+        <span class="loss">Stop Loss Price: ₹${slPrice.toFixed(2)}</span> /
+        <span class="profit">Target Price: ₹${tgPrice.toFixed(2)}</span><br>
+        <span class="loss">Total Loss: ₹${totalLoss}</span><br>
+        <span class="profit">Total Profit: ₹${totalProfit}</span>
+      `;
+    }
+
+    function customCalculate() {
+      const customRisk = parseFloat(document.getElementById('customRisk').value);
+      const customReward = parseFloat(document.getElementById('customReward').value);
+      if (!customRisk || !customReward) {
+        document.getElementById('output').innerHTML = "<span class='loss'>Enter custom Risk and Reward values.</span>";
+        return;
+      }
+      calculate(customRisk, customReward);
+    }
+  </script>
+
+</body>
+</html>

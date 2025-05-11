@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+</head>
+<body>
+  <h2>Login Page</h2>
+  <form onsubmit="login(event)">
+    <input type="text" id="username" placeholder="Username" required><br>
+    <input type="password" id="password" placeholder="Password" required><br>
+    <button type="submit">Login</button>
+  </form>
+
+  <script>
+    function login(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Simple check (replace with real validation if using a backend)
+      if (username === 'Devyani' && password === 'Ayraa@1234') {
+        sessionStorage.setItem('loggedIn', 'true');
+        window.location.href = 'Index.html';
+      } else {
+        alert('Invalid credentials');
+      }
+    }
+  </script>
+</body>
+</html>

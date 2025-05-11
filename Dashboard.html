@@ -6,7 +6,7 @@
   <title>Trading Journal Dashboard</title>
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
+  <style>    
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -131,10 +131,14 @@
     #modal .actions button:first-child { background:#03dac6; color:#000; }
     #modal .actions button:last-child  { background:#555; }
   </style>
+   <script src="script.js"></script>
 </head>
 <body>
 
   <header>
+     <a href="index.html">⬅ Home</a>
+     <a href="Login.html" onclick="logout()">Logout [->  </a>
+     
     <h1>Tradebook Dashboard</h1>
     <div class="controls">
       <button id="addBtn">Add Trade (+)</button>
